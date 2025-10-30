@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { assets } from '../../assets/assets'
 import { Outlet, useNavigate } from 'react-router-dom'
+import Sidebar from '../../components/admin/Sidebar'
+import { useAppContext } from '../../context/AppContext'
 
 const Layout = () => {
 
-    const navigate = useNavigate()
-
-    const logout = () => {
-        navigate("'/")
+    const {navigate, setToken, axios} = useAppContext()
+    
+const logout = () => {
+      setToken(null)
+      localStorage.removeItem("token")
+      axios.defaults.headers.common["Authorization"] = null
+      navigate("/")
     }
 
   return (
@@ -19,7 +24,7 @@ const Layout = () => {
       </div>
 
       <div className='flex h-[calc(100vh-70px)]'>
-        <div>Sidebar</div>
+        <Sidebar />
        <Outlet />
       </div>
     </>
